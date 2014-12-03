@@ -31,6 +31,12 @@
 		9301283C1A0F26A30097ABF9 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9301283B1A0F26A30097ABF9 /* back@2x.png */; };
 		931EF1301A101C420076E322 /* HaloExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = 931EF12E1A101C420076E322 /* HaloExplosion.sks */; };
 		931EF1311A101C420076E322 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 931EF12F1A101C420076E322 /* spark.png */; };
+		936FE1C61A2EE6F80002B981 /* LifeExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = 936FE1C51A2EE6F80002B981 /* LifeExplosion.sks */; };
+		93E4FC4D1A2EF6C800570C90 /* Bounce.caf in Resources */ = {isa = PBXBuildFile; fileRef = 93E4FC481A2EF6C800570C90 /* Bounce.caf */; };
+		93E4FC4E1A2EF6C800570C90 /* DeepExplosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = 93E4FC491A2EF6C800570C90 /* DeepExplosion.caf */; };
+		93E4FC4F1A2EF6C800570C90 /* Explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = 93E4FC4A1A2EF6C800570C90 /* Explosion.caf */; };
+		93E4FC501A2EF6C800570C90 /* Laser.caf in Resources */ = {isa = PBXBuildFile; fileRef = 93E4FC4B1A2EF6C800570C90 /* Laser.caf */; };
+		93E4FC511A2EF6C800570C90 /* Zap.caf in Resources */ = {isa = PBXBuildFile; fileRef = 93E4FC4C1A2EF6C800570C90 /* Zap.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +81,12 @@
 		9301283B1A0F26A30097ABF9 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		931EF12E1A101C420076E322 /* HaloExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = HaloExplosion.sks; sourceTree = "<group>"; };
 		931EF12F1A101C420076E322 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		936FE1C51A2EE6F80002B981 /* LifeExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LifeExplosion.sks; sourceTree = "<group>"; };
+		93E4FC481A2EF6C800570C90 /* Bounce.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bounce.caf; sourceTree = "<group>"; };
+		93E4FC491A2EF6C800570C90 /* DeepExplosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DeepExplosion.caf; sourceTree = "<group>"; };
+		93E4FC4A1A2EF6C800570C90 /* Explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Explosion.caf; sourceTree = "<group>"; };
+		93E4FC4B1A2EF6C800570C90 /* Laser.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Laser.caf; sourceTree = "<group>"; };
+		93E4FC4C1A2EF6C800570C90 /* Zap.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zap.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +128,7 @@
 		930127F21A0F1CAE0097ABF9 /* Space Cannon */ = {
 			isa = PBXGroup;
 			children = (
+				93E4FC471A2EF6C800570C90 /* Sounds */,
 				9301281E1A0F1D690097ABF9 /* SpaceCannonArt */,
 				930127F71A0F1CAE0097ABF9 /* AppDelegate.h */,
 				930127F81A0F1CAE0097ABF9 /* AppDelegate.m */,
@@ -130,6 +143,7 @@
 				930127F31A0F1CAE0097ABF9 /* Supporting Files */,
 				931EF12E1A101C420076E322 /* HaloExplosion.sks */,
 				931EF12F1A101C420076E322 /* spark.png */,
+				936FE1C51A2EE6F80002B981 /* LifeExplosion.sks */,
 			);
 			path = "Space Cannon";
 			sourceTree = "<group>";
@@ -178,6 +192,18 @@
 				9301282A1A0F1D690097ABF9 /* Starfield@2x.png */,
 			);
 			path = SpaceCannonArt;
+			sourceTree = "<group>";
+		};
+		93E4FC471A2EF6C800570C90 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				93E4FC481A2EF6C800570C90 /* Bounce.caf */,
+				93E4FC491A2EF6C800570C90 /* DeepExplosion.caf */,
+				93E4FC4A1A2EF6C800570C90 /* Explosion.caf */,
+				93E4FC4B1A2EF6C800570C90 /* Laser.caf */,
+				93E4FC4C1A2EF6C800570C90 /* Zap.caf */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93E4FC501A2EF6C800570C90 /* Laser.caf in Resources */,
 				930128301A0F1D690097ABF9 /* Ammo5@2x.png in Resources */,
 				930128311A0F1D690097ABF9 /* Ball@2x.png in Resources */,
 				930128091A0F1CAE0097ABF9 /* LaunchScreen.xib in Resources */,
@@ -270,14 +297,19 @@
 				930128321A0F1D690097ABF9 /* Block@2x.png in Resources */,
 				9301282B1A0F1D690097ABF9 /* Ammo0@2x.png in Resources */,
 				9301282C1A0F1D690097ABF9 /* Ammo1@2x.png in Resources */,
+				93E4FC4E1A2EF6C800570C90 /* DeepExplosion.caf in Resources */,
 				930128061A0F1CAE0097ABF9 /* Images.xcassets in Resources */,
+				93E4FC4D1A2EF6C800570C90 /* Bounce.caf in Resources */,
+				93E4FC511A2EF6C800570C90 /* Zap.caf in Resources */,
 				930127FE1A0F1CAE0097ABF9 /* GameScene.sks in Resources */,
 				931EF1301A101C420076E322 /* HaloExplosion.sks in Resources */,
+				936FE1C61A2EE6F80002B981 /* LifeExplosion.sks in Resources */,
 				930128041A0F1CAE0097ABF9 /* Main.storyboard in Resources */,
 				930128361A0F1D690097ABF9 /* Starfield@2x.png in Resources */,
 				9301282E1A0F1D690097ABF9 /* Ammo3@2x.png in Resources */,
 				930128351A0F1D690097ABF9 /* Halo@2x.png in Resources */,
 				9301282D1A0F1D690097ABF9 /* Ammo2@2x.png in Resources */,
+				93E4FC4F1A2EF6C800570C90 /* Explosion.caf in Resources */,
 				930128341A0F1D690097ABF9 /* Cannon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,4 +10,6 @@
 
 @interface GameScene : SKScene <SKPhysicsContactDelegate>
 
+@property (nonatomic) int ammo;  //used to track anount of ammo
+@property (nonatomic) int score; //used to track score
 @end

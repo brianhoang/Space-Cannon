@@ -14,18 +14,31 @@
 {
     //instance variable, want to access throughout class
     SKNode *_mainLayer;
-    SKSpriteNode *_cannon;
+    SKSpriteNode *_cannon; //displaying cannon
+    SKSpriteNode *_ammoDisplay; // displaying ammo
+    SKLabelNode *_scoreLabel; //keep track of score
+    
+    //variables for sound because there is a delay when loading sound
+    //if we load sound into vairable beforehand we can
+    //play sound without a delay
+    SKAction *_bounceSound;
+    SKAction *_deepExplosionSound;
+    SKAction *_explosionSound;
+    SKAction *_laserSound;
+    SKAction *_zapSound;
     BOOL _didShoot;
 }
-static const CGFloat SHOOT_SPEED = 1000.00;
+static const CGFloat SHOOT_SPEED = 1000.0;
 static const CGFloat LOW_HALO_ANGLE = 200.0 * M_PI / 180.0;  //in radian
 static const CGFloat HIGH_HALO_ANGLE = 340.0 * M_PI / 180.0;  //in radian
-static const CGFloat HALO_SPEED = 300.0 ; //in radian
+static const CGFloat HALO_SPEED = 400.0 ; //in radian
 
 //collision flag
-static const uint32_t   HALO_CATEGORY = 0x1 << 0;
-static const uint32_t   BALL_CATEGORY = 0x1 << 1;
-static const uint32_t   EDGE_CATEGORY = 0x1 << 2;
+static const uint32_t   HALO_CATEGORY       = 0x1 << 0;
+static const uint32_t   BALL_CATEGORY       = 0x1 << 1;
+static const uint32_t   EDGE_CATEGORY       = 0x1 << 2;
+static const uint32_t   SHIELD_CATEGORY     = 0x1 << 3;
+static const uint32_t   LIFEBAR_CATEGORY    = 0x1 << 4;
 
 
 
@@ -81,7 +94,7 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
     //add cannon
     _cannon = [SKSpriteNode spriteNodeWithImageNamed:@"Cannon"];
     _cannon.position = CGPointMake(self.size.width * 0.5, 0.0);
-    [_mainLayer addChild:_cannon];
+    [self addChild:_cannon];
 
     //create cannon rotation actions
     //array of movement
@@ -93,28 +106,123 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
     //create spawn halo action
     SKAction *spawnHalo = [SKAction sequence:@[[SKAction waitForDuration:1 withRange:1] , [SKAction performSelector:@selector(spawnHalo) onTarget:self ]]];
     [self runAction:[SKAction repeatActionForever:spawnHalo ]];
+    
+    //create ammo
+    _ammoDisplay = [SKSpriteNode spriteNodeWithImageNamed:@"Ammo5"];
+    _ammoDisplay.anchorPoint = CGPointMake(0.5, 0.0);  //centers in the middle of screen
+    _ammoDisplay.position = _cannon.position;
+    [self addChild:_ammoDisplay];
+    
+    SKAction *incrementAmmo = [SKAction sequence:@[[SKAction waitForDuration:1],
+                                                   [SKAction runBlock:^{
+        self.ammo++;
+    }]]];
+    [self runAction:[SKAction repeatActionForever:incrementAmmo]];
+    
+    
+    //setup score display
+    _scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"DIN Alternate"];
+    _scoreLabel.position = CGPointMake(310,10);
+    _scoreLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+    _scoreLabel.fontSize = 15;
+    [self addChild:_scoreLabel];
+    
+    //setup sound
+   _bounceSound = [SKAction playSoundFileNamed:@"Bounce.caf" waitForCompletion:NO];
+    _deepExplosionSound = [SKAction playSoundFileNamed:@"DeepExplosion.caf" waitForCompletion:NO];
+    _explosionSound = [SKAction playSoundFileNamed:@"Explosion.caf" waitForCompletion:NO];
+    _laserSound = [SKAction playSoundFileNamed:@"Laser.caf" waitForCompletion:NO];
+    _zapSound = [SKAction playSoundFileNamed:@"Zap.caf" waitForCompletion:NO];
+    
+
+    
+    [self newGame];
+  
+}
+
+
+-(void)newGame
+{
+    self.ammo = 5;
+    self.score = 0;
+    
+    //cleat state
+    [_mainLayer removeAllChildren];
+    
+    
+    //set up shields
+    for (int i = 0; i < 6; i++)
+    {
+        SKSpriteNode *shield = [SKSpriteNode spriteNodeWithImageNamed:@"Block"];
+        shield.name = @"Shield";
+        shield.position = CGPointMake(350 + (65 *i), 90);   //( ) spaces inbetween shield
+        [_mainLayer addChild:shield];
+        //giving the shields a physical body, to detect collison
+        shield.physicsBody = [ SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(42, 9)];
+        shield.physicsBody.categoryBitMask = SHIELD_CATEGORY;
+        shield.physicsBody.collisionBitMask = 0; //move or interacts with anything
+    }
+    
+    //set up life bar
+    SKSpriteNode *lifeBar = [SKSpriteNode spriteNodeWithImageNamed:@"BlueBar"];
+    //* 0.5 to center, 70 - for below shield
+    lifeBar.position = CGPointMake(self.size.width * 0.5, 70);
+                                                        //negative because centered bar in the middle
+    lifeBar.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(-lifeBar.size.width * 0.5, 0) toPoint:CGPointMake(lifeBar.size.width * 0.5, 0) ];
+    lifeBar.physicsBody.categoryBitMask = LIFEBAR_CATEGORY;
+    [_mainLayer addChild:lifeBar];
+    
+}
+
+
+
+-(void)setAmmo:(int)ammo
+{
+    if (ammo >= 0 && ammo <= 5)
+    {
+        _ammo = ammo;
+        //change ammo sprite depending on numbers of ammos
+        _ammoDisplay.texture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"Ammo%d", ammo]];
+    }
+}
+
+
+-(void)setScore:(int)score
+{
+    _score = score;
+    _scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
 }
 
 -(void)shoot
 {
-    //adding balls
-    SKSpriteNode *ball = [SKSpriteNode spriteNodeWithImageNamed:@"Ball"];
-    ball.name = @"ball";
-    CGVector rotationVector = radiansToVector(_cannon.zRotation);
-    ball.position  = CGPointMake(_cannon.position.x + (_cannon.size.width * 0.5 * rotationVector.dx)
-                                 , _cannon.position.y +(_cannon.size.width * 0.5 * rotationVector.dy));
-    [_mainLayer addChild:ball];
+    if(self.ammo > 0)
+    {
+        self.ammo --;
     
-    //making the balls move
-    ball.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:6.0];  //image is 24 pix, retina makes it 12, and radius makes it 6, add gravity
-    ball.physicsBody.velocity = CGVectorMake(rotationVector.dx * SHOOT_SPEED, rotationVector.dy * SHOOT_SPEED);
-    ball.physicsBody.restitution = 1.0; //bounciness
-    ball.physicsBody.linearDamping = 0.0;
-    ball.physicsBody.friction = 0.0;
-    ball.physicsBody.categoryBitMask = BALL_CATEGORY;
+        //adding balls
+        SKSpriteNode *ball = [SKSpriteNode spriteNodeWithImageNamed:@"Ball"];
+        ball.name = @"Ball";
+        CGVector rotationVector = radiansToVector(_cannon.zRotation);
+        ball.position  = CGPointMake(_cannon.position.x + (_cannon.size.width * 0.5 * rotationVector.dx), _cannon.position.y +(_cannon.size.width * 0.5 * rotationVector.dy));
+        [_mainLayer addChild:ball];
     
-    //ball not reacting to hitting halo, only interacts with edge
-    ball.physicsBody.collisionBitMask = EDGE_CATEGORY;
+        //making the balls move
+        ball.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:6.0];  //image is 24 pix, retina makes it 12, and radius makes it 6, add gravity
+        ball.physicsBody.velocity = CGVectorMake(rotationVector.dx * SHOOT_SPEED, rotationVector.dy * SHOOT_SPEED);
+        ball.physicsBody.restitution = 1.0; //bounciness
+        ball.physicsBody.linearDamping = 0.0;
+        ball.physicsBody.friction = 0.0;
+        ball.physicsBody.categoryBitMask = BALL_CATEGORY;
+    
+        //ball not reacting to hitting halo, only interacts with edge
+        ball.physicsBody.collisionBitMask = EDGE_CATEGORY;
+        
+        //detects when ball hits edge
+        ball.physicsBody.contactTestBitMask = EDGE_CATEGORY;
+        
+        //add explosion sound
+        [self runAction:_laserSound];
+    }
 }
 
 
@@ -122,6 +230,7 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
 {
     //create halo node
     SKSpriteNode *halo = [SKSpriteNode spriteNodeWithImageNamed:@"Halo"];
+    halo.name = @"Halo";
     halo.position = CGPointMake(randomInRange(halo.size.width * 0.5, self.size.width - (halo.size.width * 0.5)), self.size.height + (halo.size.height * 0.5));
     halo.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:16.0];  //width 64 px, because of retina is 32, radius is 16
     CGVector direction = radiansToVector(randomInRange(LOW_HALO_ANGLE, HIGH_HALO_ANGLE));
@@ -132,10 +241,13 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
     halo.physicsBody.categoryBitMask = HALO_CATEGORY;
     
     //halo ignores other halos, only react to edge
-    halo.physicsBody.collisionBitMask = EDGE_CATEGORY;
+    halo.physicsBody.collisionBitMask = EDGE_CATEGORY ;
     
-    //notifies when ball hits halo
-    halo.physicsBody.contactTestBitMask = BALL_CATEGORY;
+    //notifies when ball hits halo, or halo hits halo, or halo hits shield
+    halo.physicsBody.contactTestBitMask = BALL_CATEGORY | SHIELD_CATEGORY | HALO_CATEGORY | LIFEBAR_CATEGORY |EDGE_CATEGORY;
+    
+    //added just cause, notifies when a halo hits another halo
+   // halo.physicsBody.contactTestBitMask = HALO_CATEGORY;
     
     //within window to spawn
     if (halo.position.x > 300 && halo.position.x < 725){
@@ -157,25 +269,88 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
     SKPhysicsBody *firstBody;
     SKPhysicsBody *secondBody;
     
-    if(contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
-    {
+    if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask){
         //firstbody will always have the lowest category bit mask
         firstBody = contact.bodyA;
         secondBody = contact.bodyB;
-    }else{
-        firstBody   = contact.bodyB;
+    }else {
+        firstBody = contact.bodyB;
         secondBody = contact.bodyA;
     }
+
     
     //collison with ball and halo
     if (firstBody.categoryBitMask == HALO_CATEGORY && secondBody.categoryBitMask == BALL_CATEGORY)
     {
-        [self addExplosion:firstBody.node.position];
+        //add explosion effect
+        [self addExplosion:firstBody.node.position withName:@"HaloExplosion"];
+        
+        //add explosion sound
+        [self runAction:_explosionSound];
+        
+        //increment score
+        self.score++;
+     
+        //delete from view
+        [firstBody.node removeFromParent];
+        [secondBody.node removeFromParent];
+    }
+    //collission with halo and shield
+    if (firstBody.categoryBitMask == HALO_CATEGORY && secondBody.categoryBitMask == SHIELD_CATEGORY)
+    {
+        //add explosion effect
+        [self addExplosion:firstBody.node.position withName:@"HaloExplosion"];
+        
+        //add explosion sound
+        [self runAction:_explosionSound];
         
         //delete from view
         [firstBody.node removeFromParent];
         [secondBody.node removeFromParent];
     }
+    //collison with halo and halo
+    if (firstBody.categoryBitMask == HALO_CATEGORY && secondBody.categoryBitMask ==HALO_CATEGORY){
+        
+        [self addExplosion:firstBody.node.position withName:@"HaloExplosion"];
+        
+        //add explosion sound
+        [self runAction:_explosionSound];
+        
+        //delete from view
+        [firstBody.node removeFromParent];
+        [secondBody.node removeFromParent];
+    }
+    
+    //collison with halo and lifebar also gane over
+    if (firstBody.categoryBitMask == HALO_CATEGORY && secondBody.categoryBitMask ==LIFEBAR_CATEGORY){
+
+        [self addExplosion:secondBody.node.position withName:@"LifeExplosion"];
+        
+        //add explosion sound
+        [self runAction:_deepExplosionSound];
+        
+        //delete from view
+        [firstBody.node removeFromParent];
+        [secondBody.node removeFromParent];
+        [self gameOver];
+    }
+    
+    //collison with ball and edge
+    if (firstBody.categoryBitMask == BALL_CATEGORY && secondBody.categoryBitMask == EDGE_CATEGORY){
+        
+        [self addExplosion:contact.contactPoint withName:@"HaloExplosion"];
+        [self runAction:_zapSound];
+
+    }
+    
+    //collison with ball and edge
+    if (firstBody.categoryBitMask == HALO_CATEGORY && secondBody.categoryBitMask == EDGE_CATEGORY){
+        
+        [self addExplosion:contact.contactPoint withName:@"HaloExplosion"];
+        [self runAction:_zapSound];
+        
+    }
+    
 }
 
 
@@ -199,9 +374,9 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
 }
 
 //adding explosion particles and loading SKS file
--(void)addExplosion:(CGPoint) position
+-(void)addExplosion:(CGPoint) position withName:(NSString*) name
 {
-    NSString *explosionPath = [[NSBundle mainBundle] pathForResource:@"HaloExplosion" ofType:@"sks"];
+    NSString *explosionPath = [[NSBundle mainBundle] pathForResource:name ofType:@"sks"];
     SKEmitterNode *explosion = [NSKeyedUnarchiver unarchiveObjectWithFile:explosionPath];
     
     explosion.position = position;
@@ -216,6 +391,26 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
 
 -(void)update:(CFTimeInterval)currentTime {
     /* Called before each frame is rendered */
+}
+
+-(void) gameOver
+{   //blow up all halos
+    [_mainLayer enumerateChildNodesWithName:@"Halo" usingBlock:^(SKNode *node, BOOL *stop) {
+        [self addExplosion:node.position withName:@"HaloExplosion"];
+        [node removeFromParent];
+    }];
+    
+    [_mainLayer enumerateChildNodesWithName:@"Shield" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node removeFromParent];
+    }];
+
+    
+    [_mainLayer enumerateChildNodesWithName:@"Ball" usingBlock:^(SKNode *node, BOOL *stop) {
+        [node removeFromParent];
+    }];
+
+    [self performSelector: @selector(newGame) withObject:nil afterDelay:1.5];
+
 }
 
 @end
