@@ -7,6 +7,7 @@
 //
 
 #import "GameScene.h"
+#import "BHMenu.h"
 
 @implementation GameScene
 
@@ -14,6 +15,9 @@
 {
     //instance variable, want to access throughout class
     SKNode *_mainLayer;
+    
+    BHMenu *_menu;
+    
     SKSpriteNode *_cannon; //displaying cannon
     SKSpriteNode *_ammoDisplay; // displaying ammo
     SKLabelNode *_scoreLabel; //keep track of score
@@ -27,11 +31,13 @@
     SKAction *_laserSound;
     SKAction *_zapSound;
     BOOL _didShoot;
+    BOOL _gameOver;
+    
 }
 static const CGFloat SHOOT_SPEED = 1000.0;
 static const CGFloat LOW_HALO_ANGLE = 200.0 * M_PI / 180.0;  //in radian
 static const CGFloat HIGH_HALO_ANGLE = 340.0 * M_PI / 180.0;  //in radian
-static const CGFloat HALO_SPEED = 400.0 ; //in radian
+static const CGFloat HALO_SPEED = 300.0 ; //in radian
 
 //collision flag
 static const uint32_t   HALO_CATEGORY       = 0x1 << 0;
@@ -135,17 +141,22 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
     _zapSound = [SKAction playSoundFileNamed:@"Zap.caf" waitForCompletion:NO];
     
 
+    //setup menu
+    _menu = [[BHMenu alloc] init];
+    [self addChild:_menu];
+    _menu.position = CGPointMake(self.size.width * 0.5, self.size.height - 260);
     
-    [self newGame];
-  
+    //set up initial values
+    self.ammo = 5;
+    self.score = 0;
+    _gameOver = YES;
+    _scoreLabel.hidden = YES;
 }
 
 
 -(void)newGame
 {
-    self.ammo = 5;
-    self.score = 0;
-    
+  
     //cleat state
     [_mainLayer removeAllChildren];
     
@@ -171,6 +182,12 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
     lifeBar.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointMake(-lifeBar.size.width * 0.5, 0) toPoint:CGPointMake(lifeBar.size.width * 0.5, 0) ];
     lifeBar.physicsBody.categoryBitMask = LIFEBAR_CATEGORY;
     [_mainLayer addChild:lifeBar];
+    
+    self.score = 0;
+    _gameOver = NO;
+    _menu.hidden = YES;
+    _scoreLabel.hidden = NO;
+
     
 }
 
@@ -258,9 +275,28 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
     /* Called when a touch begins */
     
     for (UITouch *touch in touches) {
+        if(!_gameOver){
         _didShoot = YES;
+        }
     }
 }
+
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event    {
+    
+    for (UITouch *touch in touches) {
+        if(_gameOver){
+            //return a point that is in the the coordinents of menu
+            //based on the point given there, are there any nodes at that point inside menu
+            //basically what node is at the position of the touch
+            SKNode *n = [_menu nodeAtPoint:[touch locationInNode:_menu]];
+            if ([n.name isEqual:@"Play"]){
+                [self newGame];
+            }
+        }
+    }
+}
+
 
 //halo.physicsBody.contactTestBitMask = BALL_CATEGORY;, when true enter funtion
 -(void)didBeginContact:(SKPhysicsContact *)contact
@@ -408,8 +444,15 @@ static inline CGFloat randomInRange(CGFloat low, CGFloat high)
     [_mainLayer enumerateChildNodesWithName:@"Ball" usingBlock:^(SKNode *node, BOOL *stop) {
         [node removeFromParent];
     }];
-
-    [self performSelector: @selector(newGame) withObject:nil afterDelay:1.5];
+    
+    //upadte if high score
+    _menu.score = self.score;
+    if(self.score > _menu.topScore){
+        _menu.topScore = self.score;
+    }
+    _menu.hidden = NO;
+    _gameOver = YES;
+    _scoreLabel.hidden = YES;
 
 }
 
