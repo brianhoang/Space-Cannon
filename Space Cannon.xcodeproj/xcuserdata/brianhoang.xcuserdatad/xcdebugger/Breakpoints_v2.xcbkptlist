@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space Cannon/GameScene.m"
-            timestampString = "439462253.25222"
+            timestampString = "441190190.264439"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
             landmarkName = "-shoot"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Space Cannon/GameScene.m"
-            timestampString = "439461233.39147"
+            timestampString = "441190190.264439"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "-newGame"
             landmarkType = "5">
          </BreakpointContent>

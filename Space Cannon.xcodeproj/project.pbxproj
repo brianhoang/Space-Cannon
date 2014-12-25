@@ -36,6 +36,11 @@
 		931EF1301A101C420076E322 /* HaloExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = 931EF12E1A101C420076E322 /* HaloExplosion.sks */; };
 		931EF1311A101C420076E322 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 931EF12F1A101C420076E322 /* spark.png */; };
 		936FE1C61A2EE6F80002B981 /* LifeExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = 936FE1C51A2EE6F80002B981 /* LifeExplosion.sks */; };
+		93D0AB501A4BEA010069B5ED /* BallTrail.sks in Resources */ = {isa = PBXBuildFile; fileRef = 93D0AB4F1A4BEA010069B5ED /* BallTrail.sks */; };
+		93D0AB561A4BEE0E0069B5ED /* ball.m in Sources */ = {isa = PBXBuildFile; fileRef = 93D0AB551A4BEE0E0069B5ED /* ball.m */; };
+		93D0AB581A4C01090069B5ED /* HaloX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93D0AB571A4C01090069B5ED /* HaloX@2x.png */; };
+		93D0AB5C1A4C17B90069B5ED /* Bomb.sks in Resources */ = {isa = PBXBuildFile; fileRef = 93D0AB5B1A4C17B90069B5ED /* Bomb.sks */; };
+		93D0AB5E1A4C23C00069B5ED /* HaloBomb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93D0AB5D1A4C23C00069B5ED /* HaloBomb@2x.png */; };
 		93E4FC4D1A2EF6C800570C90 /* Bounce.caf in Resources */ = {isa = PBXBuildFile; fileRef = 93E4FC481A2EF6C800570C90 /* Bounce.caf */; };
 		93E4FC4E1A2EF6C800570C90 /* DeepExplosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = 93E4FC491A2EF6C800570C90 /* DeepExplosion.caf */; };
 		93E4FC4F1A2EF6C800570C90 /* Explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = 93E4FC4A1A2EF6C800570C90 /* Explosion.caf */; };
@@ -91,6 +96,12 @@
 		931EF12E1A101C420076E322 /* HaloExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = HaloExplosion.sks; sourceTree = "<group>"; };
 		931EF12F1A101C420076E322 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		936FE1C51A2EE6F80002B981 /* LifeExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LifeExplosion.sks; sourceTree = "<group>"; };
+		93D0AB4F1A4BEA010069B5ED /* BallTrail.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BallTrail.sks; sourceTree = "<group>"; };
+		93D0AB541A4BEE0E0069B5ED /* ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ball.h; sourceTree = "<group>"; };
+		93D0AB551A4BEE0E0069B5ED /* ball.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ball.m; sourceTree = "<group>"; };
+		93D0AB571A4C01090069B5ED /* HaloX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HaloX@2x.png"; sourceTree = "<group>"; };
+		93D0AB5B1A4C17B90069B5ED /* Bomb.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Bomb.sks; sourceTree = "<group>"; };
+		93D0AB5D1A4C23C00069B5ED /* HaloBomb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HaloBomb@2x.png"; sourceTree = "<group>"; };
 		93E4FC481A2EF6C800570C90 /* Bounce.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bounce.caf; sourceTree = "<group>"; };
 		93E4FC491A2EF6C800570C90 /* DeepExplosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DeepExplosion.caf; sourceTree = "<group>"; };
 		93E4FC4A1A2EF6C800570C90 /* Explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Explosion.caf; sourceTree = "<group>"; };
@@ -155,6 +166,10 @@
 				936FE1C51A2EE6F80002B981 /* LifeExplosion.sks */,
 				9317B5C91A319F300078454F /* BHMenu.h */,
 				9317B5CA1A319F300078454F /* BHMenu.m */,
+				93D0AB4F1A4BEA010069B5ED /* BallTrail.sks */,
+				93D0AB541A4BEE0E0069B5ED /* ball.h */,
+				93D0AB551A4BEE0E0069B5ED /* ball.m */,
+				93D0AB5B1A4C17B90069B5ED /* Bomb.sks */,
 			);
 			path = "Space Cannon";
 			sourceTree = "<group>";
@@ -188,6 +203,8 @@
 		9301281E1A0F1D690097ABF9 /* SpaceCannonArt */ = {
 			isa = PBXGroup;
 			children = (
+				93D0AB5D1A4C23C00069B5ED /* HaloBomb@2x.png */,
+				93D0AB571A4C01090069B5ED /* HaloX@2x.png */,
 				9317B5BC1A319A520078454F /* PlayButton@2x.png */,
 				9317B5BD1A319A520078454F /* ScoreBoard@2x.png */,
 				9317B5BE1A319A520078454F /* Title@2x.png */,
@@ -307,6 +324,7 @@
 				9317B5BF1A319A520078454F /* PlayButton@2x.png in Resources */,
 				9301283C1A0F26A30097ABF9 /* back@2x.png in Resources */,
 				930128331A0F1D690097ABF9 /* BlueBar@2x.png in Resources */,
+				93D0AB5C1A4C17B90069B5ED /* Bomb.sks in Resources */,
 				9301282F1A0F1D690097ABF9 /* Ammo4@2x.png in Resources */,
 				9317B5C01A319A520078454F /* ScoreBoard@2x.png in Resources */,
 				931EF1311A101C420076E322 /* spark.png in Resources */,
@@ -315,6 +333,7 @@
 				9301282C1A0F1D690097ABF9 /* Ammo1@2x.png in Resources */,
 				93E4FC4E1A2EF6C800570C90 /* DeepExplosion.caf in Resources */,
 				930128061A0F1CAE0097ABF9 /* Images.xcassets in Resources */,
+				93D0AB5E1A4C23C00069B5ED /* HaloBomb@2x.png in Resources */,
 				93E4FC4D1A2EF6C800570C90 /* Bounce.caf in Resources */,
 				93E4FC511A2EF6C800570C90 /* Zap.caf in Resources */,
 				930127FE1A0F1CAE0097ABF9 /* GameScene.sks in Resources */,
@@ -325,6 +344,8 @@
 				930128361A0F1D690097ABF9 /* Starfield@2x.png in Resources */,
 				9301282E1A0F1D690097ABF9 /* Ammo3@2x.png in Resources */,
 				930128351A0F1D690097ABF9 /* Halo@2x.png in Resources */,
+				93D0AB581A4C01090069B5ED /* HaloX@2x.png in Resources */,
+				93D0AB501A4BEA010069B5ED /* BallTrail.sks in Resources */,
 				9301282D1A0F1D690097ABF9 /* Ammo2@2x.png in Resources */,
 				93E4FC4F1A2EF6C800570C90 /* Explosion.caf in Resources */,
 				930128341A0F1D690097ABF9 /* Cannon@2x.png in Resources */,
@@ -349,6 +370,7 @@
 				930127F91A0F1CAE0097ABF9 /* AppDelegate.m in Sources */,
 				930127FC1A0F1CAE0097ABF9 /* GameScene.m in Sources */,
 				9317B5CB1A319F300078454F /* BHMenu.m in Sources */,
+				93D0AB561A4BEE0E0069B5ED /* ball.m in Sources */,
 				930127F61A0F1CAE0097ABF9 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

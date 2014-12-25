@@ -12,4 +12,5 @@
 
 @property (nonatomic) int ammo;  //used to track anount of ammo
 @property (nonatomic) int score; //used to track score
+@property (nonatomic) int pointValue; //used for multiplier
 @end

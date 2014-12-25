@@ -20,6 +20,7 @@
     if (self) {
         //add title screen
         SKSpriteNode *title = [SKSpriteNode spriteNodeWithImageNamed:@"Title"];
+        //(0,_) 0 is center
         title.position = CGPointMake(0, 140);
         [self addChild:title];
         
